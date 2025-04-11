@@ -9,6 +9,13 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { Plus } from "lucide-react";
 import { Trash2 } from "lucide-react";
 
@@ -24,7 +31,7 @@ export default function WordBank() {
                 <div className="flex gap-2">
                     <Input type="search" placeholder="Search words..." />
                     <Dialog>
-                        <DialogTrigger>
+                        <DialogTrigger asChild>
                             <Button className="cursor-pointer">
                                 <Plus />
                                 Add Word
@@ -79,7 +86,31 @@ export default function WordBank() {
                                             >
                                                 Difficulty Level
                                             </label>
-                                            {/** put a dropdown select here */}
+                                            <Select>
+                                                <SelectTrigger className="w-[180px]">
+                                                    <SelectValue placeholder="HSK __" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="hsk1">
+                                                        HSK 1
+                                                    </SelectItem>
+                                                    <SelectItem value="hsk2">
+                                                        HSK 2
+                                                    </SelectItem>
+                                                    <SelectItem value="hsk3">
+                                                        HSK 3
+                                                    </SelectItem>
+                                                    <SelectItem value="hsk4">
+                                                        HSK 4
+                                                    </SelectItem>
+                                                    <SelectItem value="hsk5">
+                                                        HSK 5
+                                                    </SelectItem>
+                                                    <SelectItem value="hsk6">
+                                                        HSK 6
+                                                    </SelectItem>
+                                                </SelectContent>
+                                            </Select>
                                         </div>
                                     </div>
                                 </DialogDescription>
@@ -114,7 +145,7 @@ export default function WordBank() {
                         <div className="col-span-3">你好</div>
                         <div className="col-span-3">ni3 hao3</div>
                         <div className="col-span-3">Hello</div>
-                        <div className="col-span-2">HSK 1...?</div>
+                        <div className="col-span-2">HSK 1</div>
                         <div className="col-span-1">
                             <Button variant="ghost" className="cursor-pointer">
                                 <Trash2 />

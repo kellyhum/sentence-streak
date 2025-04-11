@@ -20,8 +20,8 @@ export default function CustomCard({
     return (
         <Card className="w-[350px]">
             <CardHeader>
-                <div>{title}</div>
-                <CardTitle>{statistic}</CardTitle>
+                <div className="text-sm">{title}</div>
+                <CardTitle className="text-2xl">{statistic}</CardTitle>
             </CardHeader>
 
             <CardContent>
