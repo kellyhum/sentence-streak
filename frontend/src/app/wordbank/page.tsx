@@ -63,6 +63,7 @@ export default function WordBank() {
         const data = res.data;
 
         if (data.status == "success") {
+            console.log(data.msg);
             setWordPosted((oldVal) => !oldVal); // triggers the useEffect
         }
     };
@@ -205,8 +206,18 @@ export default function WordBank() {
                             </DialogHeader>
 
                             <DialogFooter>
-                                <Button variant="outline">Cancel</Button>
-                                <Button onClick={addWord}>Add Word</Button>
+                                <Button
+                                    variant="outline"
+                                    className="cursor-pointer"
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    onClick={addWord}
+                                    className="cursor-pointer"
+                                >
+                                    Add Word
+                                </Button>
                             </DialogFooter>
                         </DialogContent>
                     </Dialog>
