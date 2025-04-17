@@ -1,3 +1,5 @@
+"use client";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,15 +19,85 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Plus } from "lucide-react";
-import { Trash2 } from "lucide-react";
+import WordRow from "@/components/WordRow";
+
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+type Word = {
+    word: string;
+    pinyin: string;
+    meaning: string;
+    lvl: string;
+    id: string;
+};
 
 export default function WordBank() {
+    const [chinWord, setChinWord] = useState("");
+    const [pinyin, setPinyin] = useState("");
+    const [meaning, setMeaning] = useState("");
+    const [hsk, setHsk] = useState("");
+    const [wordsFromDB, setWordsFromDB] = useState<Word[]>([]);
+    const [wordPosted, setWordPosted] = useState(false);
+
+    useEffect(() => {
+        const getWords = async () => {
+            const res = await axios.get(
+                "http://127.0.0.1:5000/wordbank/getWords"
+            );
+
+            const data = res.data;
+
+            setWordsFromDB(data);
+        };
+
+        getWords();
+    }, [wordPosted]);
+
+    const deleteWord = async (doc_id: string) => {
+        const res = await axios.delete(
+            `http://127.0.0.1:5000/wordbank/delete/${doc_id}`
+        );
+
+        // update word list
+        const data = res.data;
+
+        if (data.status == "success") {
+            setWordPosted((oldVal) => !oldVal); // triggers the useEffect
+        }
+    };
+
+    const addWord = async () => {
+        const res = await axios.post("http://127.0.0.1:5000/wordbank/add", {
+            chinWord,
+            pinyin,
+            meaning,
+            hsk,
+        });
+
+        const data = res.data;
+
+        console.log(data);
+
+        if (data.status) {
+            // reset
+            setChinWord("");
+            setPinyin("");
+            setMeaning("");
+            setHsk("");
+
+            setWordPosted((oldVal) => !oldVal); // triggers the useEffect
+        }
+    };
+
     return (
         <div className="px-20 py-10">
             <div className="flex items-center justify-between mb-10">
                 <div>
                     <h1>Word Bank</h1>
-                    <div>Total words: 1</div>
+                    <div>
+                        Total words: {wordsFromDB ? wordsFromDB.length : 0}
+                    </div>
                 </div>
 
                 <div className="flex gap-2">
@@ -53,6 +125,10 @@ export default function WordBank() {
                                             <Input
                                                 id="word"
                                                 placeholder="你好"
+                                                value={chinWord}
+                                                onChange={(e) =>
+                                                    setChinWord(e.target.value)
+                                                }
                                             />
                                         </div>
                                         <div className="grid gap-2">
@@ -65,6 +141,10 @@ export default function WordBank() {
                                             <Input
                                                 id="pinyin"
                                                 placeholder="ni3 hao3"
+                                                value={pinyin}
+                                                onChange={(e) =>
+                                                    setPinyin(e.target.value)
+                                                }
                                             />
                                         </div>
                                         <div className="grid gap-2">
@@ -77,6 +157,10 @@ export default function WordBank() {
                                             <Input
                                                 id="meaning"
                                                 placeholder="Hello"
+                                                value={meaning}
+                                                onChange={(e) =>
+                                                    setMeaning(e.target.value)
+                                                }
                                             />
                                         </div>
                                         <div className="grid gap-2">
@@ -86,7 +170,11 @@ export default function WordBank() {
                                             >
                                                 Difficulty Level
                                             </label>
-                                            <Select>
+                                            <Select
+                                                onValueChange={(value) =>
+                                                    setHsk(value)
+                                                }
+                                            >
                                                 <SelectTrigger className="w-[180px]">
                                                     <SelectValue placeholder="HSK __" />
                                                 </SelectTrigger>
@@ -118,7 +206,7 @@ export default function WordBank() {
 
                             <DialogFooter>
                                 <Button variant="outline">Cancel</Button>
-                                <Button>Add Word</Button>
+                                <Button onClick={addWord}>Add Word</Button>
                             </DialogFooter>
                         </DialogContent>
                     </Dialog>
@@ -138,20 +226,22 @@ export default function WordBank() {
                 </div>
 
                 <div>
-                    <div
-                        id="row"
-                        className="grid grid-cols-12 gap-4 p-4 border-t"
-                    >
-                        <div className="col-span-3">你好</div>
-                        <div className="col-span-3">ni3 hao3</div>
-                        <div className="col-span-3">Hello</div>
-                        <div className="col-span-2">HSK 1</div>
-                        <div className="col-span-1">
-                            <Button variant="ghost" className="cursor-pointer">
-                                <Trash2 />
-                            </Button>
+                    {wordsFromDB.length > 0 ? (
+                        wordsFromDB.map((word) => (
+                            <WordRow
+                                chinWord={word.word}
+                                pinyin={word.pinyin}
+                                meaning={word.meaning}
+                                level={word.lvl}
+                                onDelete={() => deleteWord(word.id)}
+                            />
+                        ))
+                    ) : (
+                        <div className="p-10 text-center">
+                            No words in the database. Add words and they'll show
+                            up here!
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
         </div>
