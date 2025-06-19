@@ -233,7 +233,7 @@ export default function WordBank() {
                     <div className="col-span-3">Pinyin</div>
                     <div className="col-span-3">Meaning</div>
                     <div className="col-span-2">Level</div>
-                    <div className="col-span-1"></div>
+                    <div className="col-span-1">Delete</div>
                 </div>
 
                 <div>
