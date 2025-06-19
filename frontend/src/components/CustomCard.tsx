@@ -10,15 +10,17 @@ interface CustomCardTypes {
     title: string;
     statistic: number;
     desc: string;
+    customClassName: string;
 }
 
 export default function CustomCard({
     title,
     statistic,
     desc,
+    customClassName,
 }: CustomCardTypes) {
     return (
-        <Card className="w-[350px]">
+        <Card className={`${customClassName} w-[350px]`}>
             <CardHeader>
                 <div className="text-sm">{title}</div>
                 <CardTitle className="text-2xl">{statistic}</CardTitle>
