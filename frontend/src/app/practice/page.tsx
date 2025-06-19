@@ -18,24 +18,32 @@ export default function Practice() {
     const [inputSentence, setInputSentence] = useState("");
     const [displaySuccessDiv, setDisplaySuccessDiv] = useState(false);
     const [llmMsg, setLLMMsg] = useState("");
+    const [resetGameTimer, setResetGameTimer] = useState(false);
 
-    useEffect(() => {
-        const getARandomWord = async () => {
-            const res = await axios.get(
-                "http://127.0.0.1:5000/practice/getRandomWord"
-            );
-            const data = res.data;
+    const getARandomWord = async () => {
+        const res = await axios.get(
+            "http://127.0.0.1:5000/practice/getRandomWord"
+        );
+        const data = res.data;
 
-            if (data.status == "success") {
-                setRandomWord(data.word.word);
-                setRandomPinyin(data.word.pinyin);
-            } else {
-                console.log(data.msg);
-            }
-        };
+        if (data.status == "success") {
+            setRandomWord(data.word.word);
+            setRandomPinyin(data.word.pinyin);
+        } else {
+            console.log(data.msg);
+        }
+    };
+
+    const getNextQuestion = () => {
+        setInputSentence("");
+
+        setLLMMsg("");
+        setDisplaySuccessDiv(false);
+
+        setResetGameTimer(true);
 
         getARandomWord();
-    }, [readyToPlay]);
+    };
 
     const checkAnswer = async () => {
         const res = await axios.post(
@@ -53,6 +61,10 @@ export default function Practice() {
             setDisplaySuccessDiv(true);
         }
     };
+
+    useEffect(() => {
+        getARandomWord();
+    }, [readyToPlay]);
 
     return (
         <div className="px-20 py-10">
@@ -100,8 +112,17 @@ export default function Practice() {
                 <Game
                     chinWord={randomWord}
                     pinyin={randomPinyin}
+                    answerStatus={
+                        llmMsg.includes("Not correct")
+                            ? "incorrect"
+                            : llmMsg.includes("Grammatically correct!")
+                            ? "correct"
+                            : "default"
+                    }
+                    resetTimer={resetGameTimer}
                     onSubmit={checkAnswer}
                     onChange={(e) => setInputSentence(e.target.value)}
+                    onNextQClicked={getNextQuestion}
                 />
             )}
 
