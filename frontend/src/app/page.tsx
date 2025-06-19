@@ -1,7 +1,7 @@
 import CustomCard from "@/components/CustomCard";
 
 export default function Home() {
-    let sampleStats = [
+    const sampleStats = [
         {
             title: "Total Words",
             statistic: 42,

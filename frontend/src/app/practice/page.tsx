@@ -58,7 +58,9 @@ export default function Practice() {
         <div className="px-20 py-10">
             <div className="mb-10">
                 <h1>Practice</h1>
-                <div>Think "Pass the Bomb" except in another language...</div>
+                <div>
+                    {'Think "Pass the Bomb" except in another language...'}
+                </div>
             </div>
 
             {readyToPlay == false ? (
@@ -73,8 +75,9 @@ export default function Practice() {
                                 the word
                             </p>
                             <p>
-                                3. Submit - if your sentence isn't gramatically
-                                correct, you'll have to redo it :/
+                                {
+                                    "3. Submit - if your sentence isn't gramatically correct, you'll have to redo it :/"
+                                }
                             </p>
                             <p>
                                 4. Every correct sentence adds to your streak

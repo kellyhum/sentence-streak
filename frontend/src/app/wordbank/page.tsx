@@ -240,6 +240,7 @@ export default function WordBank() {
                     {wordsFromDB.length > 0 ? (
                         wordsFromDB.map((word) => (
                             <WordRow
+                                key={word.word}
                                 chinWord={word.word}
                                 pinyin={word.pinyin}
                                 meaning={word.meaning}
@@ -249,8 +250,9 @@ export default function WordBank() {
                         ))
                     ) : (
                         <div className="p-10 text-center">
-                            No words in the database. Add words and they'll show
-                            up here!
+                            {
+                                "No words in the database. Add words and they'll show up here!"
+                            }
                         </div>
                     )}
                 </div>
