@@ -22,7 +22,7 @@ export default function Practice() {
 
     const getARandomWord = async () => {
         const res = await axios.get(
-            "http://127.0.0.1:5000/practice/getRandomWord"
+            "https://sentence-streak.onrender.com/practice/getRandomWord"
         );
         const data = res.data;
 
@@ -47,7 +47,7 @@ export default function Practice() {
 
     const checkAnswer = async () => {
         const res = await axios.post(
-            "http://127.0.0.1:5000/practice/checkSentence",
+            "https://sentence-streak.onrender.com/practice/checkSentence",
             {
                 randomWord,
                 inputSentence,

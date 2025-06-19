@@ -38,7 +38,7 @@ const Game = ({
                     clearInterval(timer);
                     return 0;
                 } else {
-                    return (prev -= 20);
+                    return (prev -= 5);
                 }
             });
         }, 1000);

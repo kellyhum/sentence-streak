@@ -43,7 +43,7 @@ export default function WordBank() {
     useEffect(() => {
         const getWords = async () => {
             const res = await axios.get(
-                "http://127.0.0.1:5000/wordbank/getWords"
+                "https://sentence-streak.onrender.com/wordbank/getWords"
             );
 
             const data = res.data;
@@ -56,7 +56,7 @@ export default function WordBank() {
 
     const deleteWord = async (doc_id: string) => {
         const res = await axios.delete(
-            `http://127.0.0.1:5000/wordbank/delete/${doc_id}`
+            `https://sentence-streak.onrender.com/wordbank/delete/${doc_id}`
         );
 
         // update word list
@@ -69,12 +69,15 @@ export default function WordBank() {
     };
 
     const addWord = async () => {
-        const res = await axios.post("http://127.0.0.1:5000/wordbank/add", {
-            chinWord,
-            pinyin,
-            meaning,
-            hsk,
-        });
+        const res = await axios.post(
+            "https://sentence-streak.onrender.com/wordbank/add",
+            {
+                chinWord,
+                pinyin,
+                meaning,
+                hsk,
+            }
+        );
 
         const data = res.data;
 

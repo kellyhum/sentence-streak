@@ -5,7 +5,7 @@ from app.routes.practice_routes import practice_blueprint
 
 def create_app():
     app = Flask(__name__)
-    CORS(app)
+    CORS(app, origins=['https://sentence-streak-rzo6.vercel.app/'])
 
     app.register_blueprint(wordbank_blueprint, url_prefix="/wordbank")
     app.register_blueprint(practice_blueprint, url_prefix="/practice")
