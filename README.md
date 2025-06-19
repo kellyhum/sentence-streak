@@ -12,9 +12,20 @@ chinese essays are hard to write when you don't know how to _actually_ use that 
 
 ### todos
 
--   dark mode
--   track stats to update dashboard page (currently hard-coded)
--   user authentication
+-   ~~visualization of day:total words ratio (temporarily hardcode)~~
+
+-   ~~add timer~~
+-   ~~currently can only input one sentence -> add "next question" ability~~
+-   user authentication -> wip
 -   searching = filtering the display
--   currently can only input one sentence -> add "next question" ability
--   visualization of day:total words ratio
+
+-   technically play again button uses the "nextQ" function -> this will mess up statistics. fix!
+-   fix dashboard button
+-   can get the same word in a row b/c not marking whether a word has already been tested -> this could honestly be a feature though
+
+-   update visualization (currently hardcoded)
+-   make it impossible to enter an empty word (required fields)
+-   input doesn't clear when clicking next question
+-   able to press enter instead of clicking (for submit sentence + next question)
+-   dark mode
+-   ux fixes (cursor pointer on hover, etc)
