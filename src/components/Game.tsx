@@ -6,15 +6,17 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-
+import Link from "next/link";
 import { Input } from "./ui/input";
 import { useEffect, useState } from "react";
 
+export type answerStatusType = "default" | "incorrect" | "correct";
 interface gameInterface {
     chinWord: string;
     pinyin: string;
-    answerStatus: string;
+    answerStatus: answerStatusType;
     resetTimer: boolean;
+    inputSentence: string;
     onSubmit: () => void;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onNextQClicked: () => void;
@@ -25,6 +27,7 @@ const Game = ({
     pinyin,
     answerStatus,
     resetTimer,
+    inputSentence,
     onSubmit,
     onChange,
     onNextQClicked,
@@ -32,14 +35,18 @@ const Game = ({
     const [remainingSec, setRemainingSec] = useState(100);
 
     useEffect(() => {
+        if (answerStatus !== "default") {
+            return;
+        }
+
         const timer = setInterval(() => {
             setRemainingSec((prev) => {
-                if (prev <= 0 || answerStatus === "incorrect") {
+                if (prev <= 0) {
                     clearInterval(timer);
                     return 0;
-                } else {
-                    return (prev -= 5);
                 }
+
+                return prev - 2.5;
             });
         }, 1000);
 
@@ -73,7 +80,10 @@ const Game = ({
                         >
                             Play Again
                         </Button>
-                        <Button className="cursor-pointer">Dashboard</Button>
+
+                        <Button className="cursor-pointer">
+                            <Link href="/">Dashboard</Link>
+                        </Button>
                     </CardFooter>
                 </div>
             ) : (
@@ -90,6 +100,7 @@ const Game = ({
                                 type="text"
                                 id="sentence"
                                 placeholder="Start typing..."
+                                value={inputSentence}
                                 className="w-100"
                                 onChange={onChange}
                             />
