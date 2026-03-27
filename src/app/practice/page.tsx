@@ -21,9 +21,7 @@ export default function Practice() {
     const [resetGameTimer, setResetGameTimer] = useState(false);
 
     const getARandomWord = async () => {
-        const res = await axios.get(
-            "https://sentence-streak.onrender.com/practice/getRandomWord"
-        );
+        const res = await axios.get("/api/practice/getRandomWord");
         const data = res.data;
 
         if (data.status == "success") {
@@ -46,18 +44,15 @@ export default function Practice() {
     };
 
     const checkAnswer = async () => {
-        const res = await axios.post(
-            "https://sentence-streak.onrender.com/practice/checkSentence",
-            {
-                randomWord,
-                inputSentence,
-            }
-        );
+        const res = await axios.post("/api/practice/checkSentence", {
+            randomWord,
+            inputSentence,
+        });
         const data = res.data;
 
         if (data) {
             // error exception handling later
-            setLLMMsg(data);
+            setLLMMsg(data.response);
             setDisplaySuccessDiv(true);
         }
     };
@@ -112,13 +107,7 @@ export default function Practice() {
                 <Game
                     chinWord={randomWord}
                     pinyin={randomPinyin}
-                    answerStatus={
-                        llmMsg.includes("Not correct")
-                            ? "incorrect"
-                            : llmMsg.includes("Grammatically correct!")
-                            ? "correct"
-                            : "default"
-                    }
+                    answerStatus={llmMsg}
                     resetTimer={resetGameTimer}
                     onSubmit={checkAnswer}
                     onChange={(e) => setInputSentence(e.target.value)}
@@ -128,11 +117,11 @@ export default function Practice() {
 
             {displaySuccessDiv && (
                 <div
-                    className={`mt-5 p-5 ${
-                        llmMsg.includes("Grammatically correct!")
-                            ? "bg-green-200"
-                            : "bg-red-200"
-                    }  rounded-md>{llmMsg}`}
+                // className={`mt-5 p-5 ${
+                //     llmMsg.includes("Grammatically correct!")
+                //         ? "bg-green-200"
+                //         : "bg-red-200"
+                // }  rounded-md>{llmMsg}`}
                 >
                     {llmMsg}
                 </div>

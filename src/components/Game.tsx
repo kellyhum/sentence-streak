@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 interface gameInterface {
     chinWord: string;
     pinyin: string;
-    answerStatus: "default" | "incorrect" | "correct";
+    answerStatus: string;
     resetTimer: boolean;
     onSubmit: () => void;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
