@@ -6,7 +6,7 @@ import {
     CardFooter,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-
+import { answerStatusType } from "@/components/Game";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Game from "@/components/Game";
@@ -18,6 +18,7 @@ export default function Practice() {
     const [inputSentence, setInputSentence] = useState("");
     const [displaySuccessDiv, setDisplaySuccessDiv] = useState(false);
     const [llmMsg, setLLMMsg] = useState("");
+    const [llmStatus, setLLMStatus] = useState<answerStatusType>("default");
     const [resetGameTimer, setResetGameTimer] = useState(false);
 
     const getARandomWord = async () => {
@@ -34,11 +35,12 @@ export default function Practice() {
 
     const getNextQuestion = () => {
         setInputSentence("");
-
         setLLMMsg("");
         setDisplaySuccessDiv(false);
 
-        setResetGameTimer(true);
+        setLLMStatus("default");
+
+        setResetGameTimer((prev) => !prev);
 
         getARandomWord();
     };
@@ -48,12 +50,18 @@ export default function Practice() {
             randomWord,
             inputSentence,
         });
-        const data = res.data;
+        const data = res.data.response;
 
         if (data) {
-            // error exception handling later
-            setLLMMsg(data.response);
+            setLLMMsg(data);
             setDisplaySuccessDiv(true);
+
+            if (data.includes("Grammatically correct!")) {
+                setLLMStatus("correct");
+                return;
+            } else {
+                setLLMStatus("incorrect");
+            }
         }
     };
 
@@ -66,7 +74,8 @@ export default function Practice() {
             <div className="mb-10">
                 <h1>Practice</h1>
                 <div>
-                    {'Think "Pass the Bomb" except in another language...'}
+                    Like the word game "Bomb Party"! (I do like my word games
+                    :'))
                 </div>
             </div>
 
@@ -83,7 +92,7 @@ export default function Practice() {
                             </p>
                             <p>
                                 {
-                                    "3. Submit - if your sentence isn't gramatically correct, you'll have to redo it :/"
+                                    "3. Submit - if your sentence isn't gramatically correct, your streak ends :/"
                                 }
                             </p>
                             <p>
@@ -107,8 +116,9 @@ export default function Practice() {
                 <Game
                     chinWord={randomWord}
                     pinyin={randomPinyin}
-                    answerStatus={llmMsg}
+                    answerStatus={llmStatus}
                     resetTimer={resetGameTimer}
+                    inputSentence={inputSentence}
                     onSubmit={checkAnswer}
                     onChange={(e) => setInputSentence(e.target.value)}
                     onNextQClicked={getNextQuestion}
@@ -117,11 +127,7 @@ export default function Practice() {
 
             {displaySuccessDiv && (
                 <div
-                // className={`mt-5 p-5 ${
-                //     llmMsg.includes("Grammatically correct!")
-                //         ? "bg-green-200"
-                //         : "bg-red-200"
-                // }  rounded-md>{llmMsg}`}
+                    className={`mt-5 p-5 ${llmStatus == "correct" ? "bg-green-200" : "bg-red-200"} rounded-md>{llmMsg}`}
                 >
                     {llmMsg}
                 </div>

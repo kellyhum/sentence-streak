@@ -27,10 +27,8 @@ export async function POST(request: NextRequest) {
 
         const responseText = response.text;
 
-        console.log(responseText);
-        return NextResponse.json({ responseText });
+        return NextResponse.json({ response: responseText });
     } catch (error: any) {
-        console.error("Gemini GenAI Error:", error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        return NextResponse.json({ error: error }, { status: 500 });
     }
 }
